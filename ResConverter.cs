@@ -11,21 +11,21 @@ namespace Wizard
 {
     public class ResFile
     {
-        // ÎÄ¼şÊôĞÔ¿ÉÑ¡Öµ
+        // æ–‡ä»¶å±æ€§å¯é€‰å€¼
         public static readonly string SCALER_DEFAULT = "auto";
         public static readonly string QUALITY_DEFAULT = "high";
         public static readonly string QUALITY_NORMAL = "low";
         public static readonly string QUALITY_LOW = "normal";
 
-        // ÎÄ¼şÂ·¾¶
+        // æ–‡ä»¶è·¯å¾„
         [XmlAttribute]
         public string path = string.Empty;
 
-        // Ëõ·Å²ßÂÔ
+        // ç¼©æ”¾ç­–ç•¥
         [XmlAttribute]
         public string scaler = SCALER_DEFAULT;
 
-        // Ëõ·ÅÖÊÁ¿
+        // ç¼©æ”¾è´¨é‡
         [XmlAttribute]
         public string quality = QUALITY_DEFAULT;
 
@@ -43,18 +43,18 @@ namespace Wizard
     [XmlRootAttribute("Config", IsNullable = false)]
     public class ResConfig
     {
-        // Ö»ÊÇ¸öÃû×Ö¶øÒÑ£¬¿ÉÒÔËæ±ãĞ´
+        // åªæ˜¯ä¸ªåå­—è€Œå·²ï¼Œå¯ä»¥éšä¾¿å†™
         [XmlAttribute]
-        public string name = "Ä¬ÈÏ×ÊÔ´ÎÄ¼şÁĞ±í";
+        public string name = "é»˜è®¤èµ„æºæ–‡ä»¶åˆ—è¡¨";
 
         [XmlElement("File")]
         public List<ResFile> files = new List<ResFile>();
 
-        // ¼ÇÂ¼×ÊÔ´ÎÄ¼şµÄ¸ùÄ¿Â¼£¬Ò»°ã¾ÍÓÃ×ÊÔ´ÎÄ¼şËùÔÚµÄÄ¿Â¼
+        // è®°å½•èµ„æºæ–‡ä»¶çš„æ ¹ç›®å½•ï¼Œä¸€èˆ¬å°±ç”¨èµ„æºæ–‡ä»¶æ‰€åœ¨çš„ç›®å½•
         [XmlIgnoreAttribute]
         public string path = string.Empty;
 
-        // ´ÓÎÄ¼şÖĞÉú³ÉResConfig¶ÔÏó
+        // ä»æ–‡ä»¶ä¸­ç”ŸæˆResConfigå¯¹è±¡
         static public ResConfig Load(string filename)
         {
             try
@@ -75,7 +75,7 @@ namespace Wizard
             }
         }
 
-        // °Ñµ±Ç°ResConfig¶ÔÏó´¢´æµ½ÎÄ¼şÖĞ
+        // æŠŠå½“å‰ResConfigå¯¹è±¡å‚¨å­˜åˆ°æ–‡ä»¶ä¸­
         public bool Save(string filename)
         {
             try
@@ -97,7 +97,7 @@ namespace Wizard
 
     class ResConverter
     {
-        #region ÊÂ¼ş£º×ª»»½ø¶ÈÍ¨Öª
+        #region äº‹ä»¶ï¼šè½¬æ¢è¿›åº¦é€šçŸ¥
         public class NotifyProcessEventArgs : EventArgs
         {
             public readonly string file;
@@ -111,11 +111,11 @@ namespace Wizard
                 this.count = count;
             }
         }
-        // ×ª»»½ø¶ÈÍ¨ÖªÏìÓ¦º¯Êı
+        // è½¬æ¢è¿›åº¦é€šçŸ¥å“åº”å‡½æ•°
         public delegate void NotifyProcessHandler(ResConverter sender, NotifyProcessEventArgs e);
-        // ×ª»»½ø¶ÈÍ¨ÖªÊÂ¼ş
+        // è½¬æ¢è¿›åº¦é€šçŸ¥äº‹ä»¶
         public event NotifyProcessHandler NotifyProcessEvent;
-        // ×ª»»½ø¶ÈÍ¨Öª´¦Àíº¯Êı
+        // è½¬æ¢è¿›åº¦é€šçŸ¥å¤„ç†å‡½æ•°
         protected void OnNotifyProcess(string file, int index, int count)
         {
             if(NotifyProcessEvent != null)
@@ -133,17 +133,17 @@ namespace Wizard
             HIGH,
         }
 
-        // °´ÕÕÅäÖÃ×ª»»Ö¸¶¨µÄ×ÊÔ´
-        public void Start( // ×ÊÔ´ÎÄ¼şÁĞ±í
+        // æŒ‰ç…§é…ç½®è½¬æ¢æŒ‡å®šçš„èµ„æº
+        public void Start( // èµ„æºæ–‡ä»¶åˆ—è¡¨
                            ResConfig config,
-                           // Ä¿±êÂ·¾¶
+                           // ç›®æ ‡è·¯å¾„
                            string destFolder,
-                           // Ô´ÆÁÄ»´óĞ¡
+                           // æºå±å¹•å¤§å°
                            int srcWidth, int srcHeight,
-                           // Ä¿±êÆÁÄ»´óĞ¡
+                           // ç›®æ ‡å±å¹•å¤§å°
                            int destWidth, int destHeight )
         {
-            // ºöÂÔÎŞĞ§²ÎÊı
+            // å¿½ç•¥æ— æ•ˆå‚æ•°
             if (srcWidth <= 0 || srcHeight <= 0 || destWidth <= 0 || destHeight <= 0)
                 return;
 
@@ -152,7 +152,7 @@ namespace Wizard
 
             int cur = 0;
 
-            // ÒÔrootÎª¸ùÄ¿Â¼ÔØÈëËùÓĞÍ¼Æ¬²¢Ëõ·Å
+            // ä»¥rootä¸ºæ ¹ç›®å½•è½½å…¥æ‰€æœ‰å›¾ç‰‡å¹¶ç¼©æ”¾
             string baseDir = config.path;
             foreach (ResFile file in config.files)
             {
@@ -161,7 +161,7 @@ namespace Wizard
                 string inputFile = Path.GetFullPath(Path.Combine(baseDir, file.path));
                 string destFile = Path.GetFullPath(Path.Combine(destFolder, file.path));
 
-                // Ñ¡ÔñÖÊÁ¿²ÎÊı
+                // é€‰æ‹©è´¨é‡å‚æ•°
                 Quality q = Quality.HIGH;
                 if (file.quality.ToLower() == ResFile.QUALITY_LOW)
                     q = Quality.LOW;
@@ -173,14 +173,14 @@ namespace Wizard
                     Bitmap dest = null;
                     ImageFormat format = null;
 
-                    // ¶ÁÈ¡Ô´Í¼Æ¬
+                    // è¯»å–æºå›¾ç‰‡
                     using (Bitmap source = new Bitmap(inputFile))
                     {
-                        // ¸ù¾İ²ßÂÔ¼ÆËãÇøÓòÓ³Éä£¨ÉĞÎ´ÊµÏÖ£©
+                        // æ ¹æ®ç­–ç•¥è®¡ç®—åŒºåŸŸæ˜ å°„ï¼ˆå°šæœªå®ç°ï¼‰
                         Dictionary<Rectangle, Rectangle> rects =
                             CalcRects(source, srcWidth, srcHeight, destWidth, destHeight);
 
-                        // ÊµÊ©×ª»»
+                        // å®æ–½è½¬æ¢
                         dest = Scale(source, srcWidth, srcHeight, destWidth, destHeight, q, rects);
 
                         format = source.RawFormat;
@@ -191,40 +191,40 @@ namespace Wizard
                         dest.Save(destFile, format);
                     }
 
-                    // ×ª»»Íê±Ï
+                    // è½¬æ¢å®Œæ¯•
 
                 }
                 catch (System.Exception e)
                 {
-                    // ×ª»»³öÏÖ´íÎó
+                    // è½¬æ¢å‡ºç°é”™è¯¯
                     Console.WriteLine(e.Message);
                 }
             }
         }
 
-        // ¸ù¾İ²ßÂÔ¼ÆËãÇøÓòÓ³Éä
+        // æ ¹æ®ç­–ç•¥è®¡ç®—åŒºåŸŸæ˜ å°„
         Dictionary<Rectangle, Rectangle> CalcRects( Bitmap source,
-                                                    // Ô´ÆÁÄ»´óĞ¡
+                                                    // æºå±å¹•å¤§å°
                                                     int srcWidth, int srcHeight,
-                                                    // Ä¿±êÆÁÄ»´óĞ¡
+                                                    // ç›®æ ‡å±å¹•å¤§å°
                                                     int destWidth, int destHeight )
         {
-            // ÉĞÎ´ÊµÏÖ
+            // å°šæœªå®ç°
             return null;
         }
 
-        // ¸ù¾İ¸ø¶¨µÄÇøÓòÓ³ÉäºÍÖÊÁ¿²ÎÊı£¬½«Ô´Í¼Æ¬Ëõ·Åµ½Ä¿±ê´óĞ¡
+        // æ ¹æ®ç»™å®šçš„åŒºåŸŸæ˜ å°„å’Œè´¨é‡å‚æ•°ï¼Œå°†æºå›¾ç‰‡ç¼©æ”¾åˆ°ç›®æ ‡å¤§å°
         Bitmap Scale( Image source,
-                      // Ô´ÆÁÄ»´óĞ¡
+                      // æºå±å¹•å¤§å°
                       int srcWidth, int srcHeight,
-                      // Ä¿±êÆÁÄ»´óĞ¡
+                      // ç›®æ ‡å±å¹•å¤§å°
                       int destWidth, int destHeight,
-                      // ×ª»»ÖÊÁ¿
+                      // è½¬æ¢è´¨é‡
                       Quality q,
-                      // ×ª»»ÇøÓòÓ³Éä
+                      // è½¬æ¢åŒºåŸŸæ˜ å°„
                       Dictionary<Rectangle, Rectangle> rects)
         {
-            // ºöÂÔÎŞĞ§²ÎÊı
+            // å¿½ç•¥æ— æ•ˆå‚æ•°
             if (srcWidth <= 0 || srcHeight <= 0 || destWidth <= 0 || destHeight <= 0)
                 return null;
 
@@ -234,7 +234,7 @@ namespace Wizard
             Bitmap dest = new Bitmap(realWidth, realHeight);
             using (Graphics g = Graphics.FromImage(dest))
             {
-                // ¸ù¾İÖÊÁ¿²ÎÊı¾ö¶¨Ëõ·ÅËã·¨
+                // æ ¹æ®è´¨é‡å‚æ•°å†³å®šç¼©æ”¾ç®—æ³•
                 switch (q)
                 {
                     case Quality.LOW:
@@ -256,17 +256,17 @@ namespace Wizard
 
                 if (rects == null || rects.Count == 0)
                 {
-                    // Ö±½ÓËõ·Åµ½Ö¸¶¨µÄ´óĞ¡
+                    // ç›´æ¥ç¼©æ”¾åˆ°æŒ‡å®šçš„å¤§å°
                     g.DrawImage(source, 0, 0, realWidth, realHeight);
                 }
                 else
                 {
-                    // °´ÕÕ¹æ»®µÄÇøÓòËõ·Å
+                    // æŒ‰ç…§è§„åˆ’çš„åŒºåŸŸç¼©æ”¾
                     foreach (KeyValuePair<Rectangle, Rectangle> kp in rects)
                     {
                         if (kp.Value.Left >= realWidth || kp.Value.Top >= realHeight)
                         {
-                            // ºöÂÔÎŞĞ§Êı¾İ
+                            // å¿½ç•¥æ— æ•ˆæ•°æ®
                             continue;
                         }
 

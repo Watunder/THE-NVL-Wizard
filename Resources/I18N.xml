@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<I18N>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>项目管理向导</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>1.选择主题或项目</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>2.设定分辨率</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>高</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>宽</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>3.设定名称</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>项目名称</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>单独设定目录名</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>完成</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>结束</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>4.文件转换</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>取消</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>上一步</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>下一步</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>主题</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>项目</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>(自定义)</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>开始</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>项目？</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>项目原始分辨率：</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>主题原始分辨率：</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>{0}{0}注意：【{2}】将覆盖【{1}】中的同名文件。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>完毕！</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>修改</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>创建</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>正在</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>项目，请稍候……</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\Wizard.cs -->
+    <Key>({0}/{1}){2} 转换中……</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>默认主题</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>错误：软件根目录不存在。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>错误：无效的分辨率设置。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>错误：无效的项目名称。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>错误：项目文件夹已存在，请更换项目名或设置其他路径。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>错误：项目分辨率未改动，不需要进行转换</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>错误：主题目录不存在。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>警告：主题缺少配置文件</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>警告：主题分辨率错误。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>警告：默认主题分辨率错误。</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>无效的项目配置：</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>【修改项目配置清单】</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>原始分辨率：{0}x{1}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>目标分辨率：{0}x{1}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key> (分辨率已修改)</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>【创建项目配置清单】</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>所选主题：{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>分辨率设定：{0}x{1}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key> (非原始分辨率)</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>项目名称：{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>项目位置：{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>缩放策略：{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>缩放质量：{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>NVLMaker目录：{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>拷贝{0}</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>图片转换中……</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>修改setting.tjs失败:</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>修改Config.tjs失败:</Key>
+  </Entry>
+  <Entry>
+    <!-- Found in: ..\WizardConfig.cs -->
+    <Key>修改界面布局文件失败:</Key>
+  </Entry>
+</I18N>

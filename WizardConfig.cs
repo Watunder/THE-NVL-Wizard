@@ -6,10 +6,13 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Drawing;
+using System.Configuration;
+
+using static I18N.DotNet.GlobalLocalizer;
 
 namespace Wizard
 {
-    // ·Ö±æÂÊÉèÖÃ¶ÔÏó
+    // åˆ†è¾¨ç‡è®¾ç½®å¯¹è±¡
     class Resolution
     {
         public int _w;
@@ -49,24 +52,26 @@ namespace Wizard
             {
                 return new Resolution[] {
                 //new Resolution(640, 480),
-                new Resolution(800, 600),
-                new Resolution(1024, 768),
-                new Resolution(1152, 864),
-                new Resolution(1280, 720),
-                new Resolution(1280, 800),
+                //new Resolution(800, 600),
+                //new Resolution(1024, 768),
+                //new Resolution(1152, 864),
+                //new Resolution(1280, 720),
+                //new Resolution(1280, 800),
                 //new Resolution(1280, 960),
                 //new Resolution(1280, 1024),
                 //new Resolution(1366, 768),
                 //new Resolution(1400, 1050),
                 //new Resolution(1440, 900),
                 //new Resolution(1680, 1050),
-                //new Resolution(1920, 1080),
+                new Resolution(1920, 1080),
+                new Resolution(2560, 1440),
+                new Resolution(3840, 2160)
                 };
             }
         }
     }
 
-    // Ä£°åµÄ»ù±¾ÊôĞÔ
+    // æ¨¡æ¿çš„åŸºæœ¬å±æ€§
     class ProjectProperty
     {
         public string readme = string.Empty;
@@ -75,7 +80,7 @@ namespace Wizard
         {
             get
             {
-                // ¶ÁÈ¡±êÌâ
+                // è¯»å–æ ‡é¢˜
                 string ret = null;
                 if (setting != null)
                 {
@@ -89,7 +94,7 @@ namespace Wizard
         {
             get
             {
-                // ¶ÁÈ¡Ô¤Éè¿í¶È
+                // è¯»å–é¢„è®¾å®½åº¦
                 double ret = double.NaN;
                 if (setting != null)
                 {
@@ -104,7 +109,7 @@ namespace Wizard
         {
             get
             {
-                // ¶ÁÈ¡Ô¤Éè¸ß¶È
+                // è¯»å–é¢„è®¾é«˜åº¦
                 double ret = double.NaN;
                 if (setting != null)
                 {
@@ -119,7 +124,7 @@ namespace Wizard
         {
             get
             {
-                // ¶ÁÈ¡ËõÂÔÍ¼´óĞ¡
+                // è¯»å–ç¼©ç•¥å›¾å¤§å°
                 double ret = double.NaN;
                 if (setting != null)
                 {
@@ -143,7 +148,7 @@ namespace Wizard
         }
     }
 
-    // ·â×°Ò»Ğ©¸¨ÖúµÄ·½·¨ÓÃÓÚ×ª»»Êı¾İ
+    // å°è£…ä¸€äº›è¾…åŠ©çš„æ–¹æ³•ç”¨äºè½¬æ¢æ•°æ®
     class TjsHelper
     {
         public static double ScaleInteger(TjsDict dict, string name, double scale)
@@ -173,18 +178,18 @@ namespace Wizard
             TjsValue v = null;
             if (dict.val.TryGetValue(name, out v))
             {
-                // ¼ì²éÊÇ²»ÊÇÊı×é
+                // æ£€æŸ¥æ˜¯ä¸æ˜¯æ•°ç»„
                 TjsArray arr = v as TjsArray;
                 if (arr != null)
                 {
-                    // ´ÓÖĞ¶ÁÈ¡Á½¸öÔªËØµÄ×ø±êÊı×é
+                    // ä»ä¸­è¯»å–ä¸¤ä¸ªå…ƒç´ çš„åæ ‡æ•°ç»„
                     List<TjsValue> arraynew = new List<TjsValue>();
                     foreach (TjsValue pos in arr.val)
                     {
                         Point p = Point.Empty;
                         if (TryGetPos(pos, out p))
                         {
-                            // °´±ÈÀıËõ·Å
+                            // æŒ‰æ¯”ä¾‹ç¼©æ”¾
                             TjsArray posnew = CreatePos((int)(p.X * scaleX), (int)(p.Y * scaleY));
                             arraynew.Add(posnew);
                         }
@@ -207,7 +212,7 @@ namespace Wizard
             TjsValue v = null;
             if (dict.val.TryGetValue(name, out v))
             {
-                // °´Å¥ÉÏ¶à¼ÇÂ¼ÁËÒ»¸öÊÇ·ñÏÔÊ¾: x, y, shown
+                // æŒ‰é’®ä¸Šå¤šè®°å½•äº†ä¸€ä¸ªæ˜¯å¦æ˜¾ç¤º: x, y, shown
                 TjsArray xys = v as TjsArray;
                 if (xys != null && xys.val.Count == 3)
                 {
@@ -271,27 +276,28 @@ namespace Wizard
         }
     }
 
-    // ÏîÄ¿Ïòµ¼ÅäÖÃ¶ÔÏó
+    // é¡¹ç›®å‘å¯¼é…ç½®å¯¹è±¡
     class WizardConfig
     {
-        // Ò»Ğ©³£Á¿
-        public const string THEME_FOLDER = "\\skin";
-        public const string TEMPLATE_FOLDER = "\\project\\template";
-        public const string DATA_FOLDER = "\\data";
-        public const string PROJECT_FOLDER = "\\project";
+        // ä¸€äº›å¸¸é‡
+        public static readonly string THEME_FOLDER = "\\" + ConfigurationManager.AppSettings["THEME_FOLDER_NAME"];
+        public static readonly string TEMPLATE_FOLDER = "\\" + ConfigurationManager.AppSettings["PROJECT_FOLDER_NAME"] + "\\template";
+        public static readonly string DATA_FOLDER = "\\" + ConfigurationManager.AppSettings["DATA_FOLDER_NAME"];
+        public static readonly string PROJECT_FOLDER = "\\" + ConfigurationManager.AppSettings["PROJECT_FOLDER_NAME"];
 
-        public const string UI_LAYOUT = "macro\\ui*.tjs";
-        public const string UI_SETTING = "macro\\setting.tjs";
-        public const string UI_CONFIG = "Config.tjs";
-        public const string UI_README = "Readme.txt";
+        public static readonly string UI_LAYOUT = ConfigurationManager.AppSettings["NVL_FOLDER_NAME"] + "\\ui*.tjs";
+        public static readonly string UI_SETTING = ConfigurationManager.AppSettings["NVL_FOLDER_NAME"] + "\\setting.tjs";
 
-        public const int DEFAULT_WIDTH = 1024;
-        public const int DEFAULT_HEIGHT = 768;
+        public static readonly string UI_CONFIG = "Config.tjs";
+        public static readonly string UI_README = "Readme.txt";
 
-        public const string NAME_DEFAULT_THEME = "Ä¬ÈÏÖ÷Ìâ";
-        public const string PROJECT_DEFAULT_THEME = "template";
+        public static readonly int DEFAULT_WIDTH = 1920;
+        public static readonly int DEFAULT_HEIGHT = 1080;
 
-        // ºöÂÔÖ¸¶¨µÄÍ¼Æ¬ÎÄ¼ş
+        public static readonly string DEFAULT_THEME_NAME = Localize("é»˜è®¤ä¸»é¢˜");
+        public static readonly string TEMPLATE_PROJECT_FOLDER = "template";
+
+        // å¿½ç•¥æŒ‡å®šçš„å›¾ç‰‡æ–‡ä»¶
         const string PIC_IGNORE1 = @"data\system";
         const string PIC_IGNORE2 = @"system";
         public static bool IgnorePicture(string relFile)
@@ -300,43 +306,43 @@ namespace Wizard
             return file.StartsWith(PIC_IGNORE1) || file.StartsWith(PIC_IGNORE2);
         }
 
-        #region Êı¾İ³ÉÔ±
-        private string _baseFolder = string.Empty; // nvlmaker¸ùÄ¿Â¼
-        private string _themeName = string.Empty; // Ö÷ÌâÄ¿Â¼Ãû
+        #region æ•°æ®æˆå‘˜
+        private string _baseFolder = string.Empty; // nvlmakeræ ¹ç›®å½•
+        private string _themeName = string.Empty; // ä¸»é¢˜ç›®å½•å
 
-        public int _height; // ·Ö±æÂÊ-¸ß¶È
-        public int _width;  // ·Ö±æÂÊ-¿í¶È
+        public int _height; // åˆ†è¾¨ç‡-é«˜åº¦
+        public int _width;  // åˆ†è¾¨ç‡-å®½åº¦
 
-        private string _projectName = string.Empty;     // ÏîÄ¿Ãû³Æ
-        private string _projectFolder = string.Empty;   // ÏîÄ¿Ä¿Â¼£¬¿ÕÔòÈ¡Ãû³Æ×÷ÎªÄ¿Â¼
+        private string _projectName = string.Empty;     // é¡¹ç›®åç§°
+        private string _projectFolder = string.Empty;   // é¡¹ç›®ç›®å½•ï¼Œç©ºåˆ™å–åç§°ä½œä¸ºç›®å½•
 
-        // Ä¿Ç°Ëõ·Å¾Í°´Ä¬ÈÏ×ö
-        private string _scaler = ResFile.SCALER_DEFAULT; // Ëõ·Å²ßÂÔ£¬Ä¿Ç°Ö»ÓĞÕâÖÖ:(
-        private string _quality = ResFile.QUALITY_DEFAULT;   // Ëõ·ÅÖÊÁ¿£¬Ä¬ÈÏÊÇ¸ß
+        // ç›®å‰ç¼©æ”¾å°±æŒ‰é»˜è®¤åš
+        private string _scaler = ResFile.SCALER_DEFAULT; // ç¼©æ”¾ç­–ç•¥ï¼Œç›®å‰åªæœ‰è¿™ç§:(
+        private string _quality = ResFile.QUALITY_DEFAULT;   // ç¼©æ”¾è´¨é‡ï¼Œé»˜è®¤æ˜¯é«˜
 
-        // ÊÇ·ñ´¦ÔÚÏîÄ¿±à¼­Ä£Ê½
+        // æ˜¯å¦å¤„åœ¨é¡¹ç›®ç¼–è¾‘æ¨¡å¼
         private bool _modifyproject = false;
 
-        // ´¢´æÉÏ´Î¶ÁÈ¡µÄÊôĞÔ£¬±ÜÃâ¶à´Î¶ÁÈ¡¡£¸÷ÖÖBug¶¼ÊÇÕâ»õ¸ãµÄ¡£
+        // å‚¨å­˜ä¸Šæ¬¡è¯»å–çš„å±æ€§ï¼Œé¿å…å¤šæ¬¡è¯»å–ã€‚å„ç§Bugéƒ½æ˜¯è¿™è´§æçš„ã€‚
         private ProjectProperty _info = null;
         #endregion
 
-        // nvlmaker¸ùÂ·¾¶
+        // nvlmakeræ ¹è·¯å¾„
         public string BaseFolder
         {
             get
             {
-                // Èí¼ş¸ùÄ¿Â¼¾ø¶ÔÂ·¾¶£¬²»°üÀ¨½áÎ²µÄ ¡°\¡±
+                // è½¯ä»¶æ ¹ç›®å½•ç»å¯¹è·¯å¾„ï¼Œä¸åŒ…æ‹¬ç»“å°¾çš„ â€œ\â€
                 return _baseFolder;
             }
             set
             {
-                // ´¦ÀíÏÂ£¬±£Ö¤²»Îª¿ÕÖ¸Õë»ò¿Õ°××Ö´®
+                // å¤„ç†ä¸‹ï¼Œä¿è¯ä¸ä¸ºç©ºæŒ‡é’ˆæˆ–ç©ºç™½å­—ä¸²
                 _baseFolder = (value == null ? string.Empty : value.Trim());
             }
         }
 
-        // »ù´¡Ä£°åÂ·¾¶
+        // åŸºç¡€æ¨¡æ¿è·¯å¾„
         public string BaseTemplateFolder
         {
             get
@@ -345,7 +351,7 @@ namespace Wizard
             }
         }
 
-        // ÊÇ·ñÑ¡ÔñÁËÄ¬ÈÏÖ÷Ìâ
+        // æ˜¯å¦é€‰æ‹©äº†é»˜è®¤ä¸»é¢˜
         public bool IsDefaultTheme
         {
             get
@@ -354,7 +360,7 @@ namespace Wizard
             }
         }
 
-        // ÊÇ·ñ´¦ÔÚ±à¼­ÏîÄ¿Ä£Ê½
+        // æ˜¯å¦å¤„åœ¨ç¼–è¾‘é¡¹ç›®æ¨¡å¼
         public bool IsModifyProject
         {
             get { return _modifyproject; }
@@ -371,7 +377,7 @@ namespace Wizard
             }
         }
 
-        // Ö÷ÌâÃû³Æ
+        // ä¸»é¢˜åç§°
         public string ThemeName
         {
             get
@@ -380,10 +386,10 @@ namespace Wizard
             }
             set
             {
-                // ´¦ÀíÏÂ£¬±£Ö¤²»Îª¿ÕÖ¸Õë»ò¿Õ°××Ö´®
+                // å¤„ç†ä¸‹ï¼Œä¿è¯ä¸ä¸ºç©ºæŒ‡é’ˆæˆ–ç©ºç™½å­—ä¸²
                 string themeName = (value == null ? string.Empty : value.Trim());
 
-                // Èç¹ûÖ÷Ìâ¸ü»»ÔòÇå¿ÕÔ¤¶ÁµÄÉèÖÃ
+                // å¦‚æœä¸»é¢˜æ›´æ¢åˆ™æ¸…ç©ºé¢„è¯»çš„è®¾ç½®
                 if(themeName != _themeName)
                 {
                     this._themeName = themeName;
@@ -392,7 +398,7 @@ namespace Wizard
             }
         }
 
-        // Ö÷ÌâÂ·¾¶
+        // ä¸»é¢˜è·¯å¾„
         public string ThemeFolder
         {
             get
@@ -403,13 +409,13 @@ namespace Wizard
                 }
                 else
                 {
-                    // Á¬½ÓÖ÷ÌâÄ¿Â¼ºÍ¸ùÄ¿Â¼
+                    // è¿æ¥ä¸»é¢˜ç›®å½•å’Œæ ¹ç›®å½•
                     return this.BaseFolder + THEME_FOLDER + "\\" + this.ThemeName;
                 }
             }
         }
 
-        // Ö÷ÌâÅäÖÃÎÄ¼ş
+        // ä¸»é¢˜é…ç½®æ–‡ä»¶
         public string ThemeSetting
         {
             get
@@ -418,7 +424,7 @@ namespace Wizard
             }
         }
 
-        // Ö÷ÌâµÄÊı¾İÄ¿Â¼
+        // ä¸»é¢˜çš„æ•°æ®ç›®å½•
         public string ThemeDataFolder
         {
             get
@@ -434,13 +440,13 @@ namespace Wizard
             }
         }
 
-        // ËùÑ¡Ö÷ÌâµÄÊôĞÔ
+        // æ‰€é€‰ä¸»é¢˜çš„å±æ€§
         public ProjectProperty ThemeInfo
         {
             get { return ReadInfo(this.ThemeDataFolder, this.ThemeSetting); }
         }
 
-        // Ä¿±êÏîÄ¿Â·¾¶
+        // ç›®æ ‡é¡¹ç›®è·¯å¾„
         public string ProjectFolder
         {
             get
@@ -456,12 +462,12 @@ namespace Wizard
             }
             set
             {
-                // 0³¤¶È×Ö´®±íÊ¾Ã»ÓĞµ¥¶ÀÉèÖÃÏîÄ¿Ä¿Â¼
+                // 0é•¿åº¦å­—ä¸²è¡¨ç¤ºæ²¡æœ‰å•ç‹¬è®¾ç½®é¡¹ç›®ç›®å½•
                 _projectFolder = (value == null ? string.Empty : value.Trim());
             }
         }
 
-        // Ä¿±êÏîÄ¿Êı¾İÂ·¾¶
+        // ç›®æ ‡é¡¹ç›®æ•°æ®è·¯å¾„
         public string ProjectDataFolder
         {
             get
@@ -470,7 +476,7 @@ namespace Wizard
             }
         }
 
-        // Ä¿±êÏîÄ¿Ãû³Æ
+        // ç›®æ ‡é¡¹ç›®åç§°
         public string ProjectName
         {
             get
@@ -479,20 +485,20 @@ namespace Wizard
             }
             set
             {
-                // ´¦ÀíÏÂ£¬±£Ö¤²»Îª¿ÕÖ¸Õë»ò¿Õ°××Ö´®
+                // å¤„ç†ä¸‹ï¼Œä¿è¯ä¸ä¸ºç©ºæŒ‡é’ˆæˆ–ç©ºç™½å­—ä¸²
                 string projectName = (value == null ? string.Empty : value.Trim());
 
                 if(_projectName != projectName)
                 {
                     _projectName = projectName;
                     
-                    // ĞèÒª¸üĞÂinfoĞÅÏ¢
+                    // éœ€è¦æ›´æ–°infoä¿¡æ¯
                     if(this.IsModifyProject) _info = null;
                 }
             }
         }
 
-        // ÏîÄ¿ÅäÖÃÎÄ¼ş
+        // é¡¹ç›®é…ç½®æ–‡ä»¶
         public string ProjectSetting
         {
             get
@@ -501,13 +507,13 @@ namespace Wizard
             }
         }
 
-        // ËùÑ¡ÏîÄ¿µÄÊôĞÔ
+        // æ‰€é€‰é¡¹ç›®çš„å±æ€§
         public ProjectProperty ProjectInfo
         {
             get { return ReadInfo(this.ProjectDataFolder, this.ProjectSetting); }
         }
 
-        // ¼ì²éÕâ¸öÅäÖÃÊÇ·ñÒÑ¾­Íê±¸£¬°Ñ³ö´íĞÅÏ¢Ğ´Èëoutput
+        // æ£€æŸ¥è¿™ä¸ªé…ç½®æ˜¯å¦å·²ç»å®Œå¤‡ï¼ŒæŠŠå‡ºé”™ä¿¡æ¯å†™å…¥output
         public bool IsReady(TextWriter output)
         {
             try
@@ -515,25 +521,25 @@ namespace Wizard
                 string path = this.BaseFolder;
                 if (string.IsNullOrEmpty(_baseFolder) || !Directory.Exists(path))
                 {
-                    if (output != null) output.WriteLine("´íÎó£ºÈí¼ş¸ùÄ¿Â¼²»´æÔÚ¡£");
+                    if (output != null) output.WriteLine(Localize("é”™è¯¯ï¼šè½¯ä»¶æ ¹ç›®å½•ä¸å­˜åœ¨ã€‚"));
                     return false;
                 }
 
                 if (_height <= 0 || _width <= 0)
                 {
-                    if (output != null) output.WriteLine("´íÎó£ºÎŞĞ§µÄ·Ö±æÂÊÉèÖÃ¡£");
+                    if (output != null) output.WriteLine(Localize("é”™è¯¯ï¼šæ— æ•ˆçš„åˆ†è¾¨ç‡è®¾ç½®ã€‚"));
                     return false;
                 }
 
                 path = this.ProjectFolder;
                 if (string.IsNullOrEmpty(_projectName))
                 {
-                    if (output != null) output.WriteLine("´íÎó£ºÎŞĞ§µÄÏîÄ¿Ãû³Æ¡£");
+                    if (output != null) output.WriteLine(Localize("é”™è¯¯ï¼šæ— æ•ˆçš„é¡¹ç›®åç§°ã€‚"));
                     return false;
                 }
                 else if (!this.IsModifyProject && Directory.Exists(path))
                 {
-                    if (output != null) output.WriteLine("´íÎó£ºÏîÄ¿ÎÄ¼ş¼ĞÒÑ´æÔÚ£¬Çë¸ü»»ÏîÄ¿Ãû»òÉèÖÃÆäËûÂ·¾¶¡£");
+                    if (output != null) output.WriteLine(Localize("é”™è¯¯ï¼šé¡¹ç›®æ–‡ä»¶å¤¹å·²å­˜åœ¨ï¼Œè¯·æ›´æ¢é¡¹ç›®åæˆ–è®¾ç½®å…¶ä»–è·¯å¾„ã€‚"));
                     return false;
                 }
 
@@ -542,7 +548,7 @@ namespace Wizard
                     ProjectProperty info = ProjectInfo;
                     if (info == null || (info.width == this._width && info.height == this._height))
                     {
-                        if (output != null) output.WriteLine("´íÎó£ºÏîÄ¿·Ö±æÂÊÎ´¸Ä¶¯£¬²»ĞèÒª½øĞĞ×ª»»");
+                        if (output != null) output.WriteLine(Localize("é”™è¯¯ï¼šé¡¹ç›®åˆ†è¾¨ç‡æœªæ”¹åŠ¨ï¼Œä¸éœ€è¦è¿›è¡Œè½¬æ¢"));
                         return false;
                     }
                 }
@@ -553,31 +559,31 @@ namespace Wizard
                     {
                         if (!Directory.Exists(path))
                         {
-                            if (output != null) output.WriteLine("´íÎó£ºÖ÷ÌâÄ¿Â¼²»´æÔÚ¡£");
+                            if (output != null) output.WriteLine(Localize("é”™è¯¯ï¼šä¸»é¢˜ç›®å½•ä¸å­˜åœ¨ã€‚"));
                             return false;
                         }
 
                         path = this.ThemeSetting;
                         if (string.IsNullOrEmpty(path) || !File.Exists(path))
                         {
-                            if (output != null) output.WriteLine("¾¯¸æ£ºÖ÷ÌâÈ±ÉÙÅäÖÃÎÄ¼ş");
+                            if (output != null) output.WriteLine(Localize("è­¦å‘Šï¼šä¸»é¢˜ç¼ºå°‘é…ç½®æ–‡ä»¶"));
                         }
                     }
 
                     ProjectProperty info = ThemeInfo;
                     if (info == null || info.height <= 0 || info.width <= 0)
                     {
-                        if (output != null) output.WriteLine("¾¯¸æ£ºÖ÷Ìâ·Ö±æÂÊ´íÎó¡£");
+                        if (output != null) output.WriteLine(Localize("è­¦å‘Šï¼šä¸»é¢˜åˆ†è¾¨ç‡é”™è¯¯ã€‚"));
                     }
 
                     ProjectProperty baseInfo = ReadBaseTemplateInfo();
                     if (baseInfo != info && (baseInfo == null || baseInfo.height <= 0 || baseInfo.width <= 0))
                     {
-                        if (output != null) output.WriteLine("¾¯¸æ£ºÄ¬ÈÏÖ÷Ìâ·Ö±æÂÊ´íÎó¡£");
+                        if (output != null) output.WriteLine(Localize("è­¦å‘Šï¼šé»˜è®¤ä¸»é¢˜åˆ†è¾¨ç‡é”™è¯¯ã€‚"));
                     }
                 }
 
-                // Éú³ÉÅäÖÃ±¨¸æ
+                // ç”Ÿæˆé…ç½®æŠ¥å‘Š
                 if(output != null)
                 {
                     output.WriteLine(this.ToString());
@@ -585,62 +591,62 @@ namespace Wizard
             }
             catch (System.Exception e)
             {
-                if (output != null) output.WriteLine("ÎŞĞ§µÄÏîÄ¿ÅäÖÃ£º" + e.Message);
+                if (output != null) output.WriteLine(Localize("æ— æ•ˆçš„é¡¹ç›®é…ç½®ï¼š") + e.Message);
                 return false;
             }
 
             return true;
         }
 
-        // ¸ù¾İÅäÖÃµÄÄÚÈİÉú³É±¨¸æ
+        // æ ¹æ®é…ç½®çš„å†…å®¹ç”ŸæˆæŠ¥å‘Š
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             if (this.IsModifyProject)
             {
-                sb.AppendFormat("¡¾ĞŞ¸ÄÏîÄ¿ÅäÖÃÇåµ¥¡¿"); sb.Append(Environment.NewLine);
+                sb.AppendFormat(Localize("ã€ä¿®æ”¹é¡¹ç›®é…ç½®æ¸…å•ã€‘")); sb.Append(Environment.NewLine);
 
                 sb.Append(Environment.NewLine);
                 ProjectProperty info = this.ProjectInfo;
-                sb.AppendFormat("Ô­Ê¼·Ö±æÂÊ£º{0}x{1}", info.width, info.height);sb.Append(Environment.NewLine);
-                sb.AppendFormat("Ä¿±ê·Ö±æÂÊ£º{0}x{1}", this._width, this._height);
+                sb.AppendFormat(Localize("åŸå§‹åˆ†è¾¨ç‡ï¼š{0}x{1}"), info.width, info.height);sb.Append(Environment.NewLine);
+                sb.AppendFormat(Localize("ç›®æ ‡åˆ†è¾¨ç‡ï¼š{0}x{1}"), this._width, this._height);
                 if (info.width != _width || info.height != this._height)
                 {
-                    sb.AppendFormat(" (·Ö±æÂÊÒÑĞŞ¸Ä)");
+                    sb.AppendFormat(Localize(" (åˆ†è¾¨ç‡å·²ä¿®æ”¹)"));
                 }
                 sb.Append(Environment.NewLine);
             }
             else
             {
-                sb.AppendFormat("¡¾´´½¨ÏîÄ¿ÅäÖÃÇåµ¥¡¿"); sb.Append(Environment.NewLine);
+                sb.AppendFormat(Localize("ã€åˆ›å»ºé¡¹ç›®é…ç½®æ¸…å•ã€‘")); sb.Append(Environment.NewLine);
 
                 sb.Append(Environment.NewLine);
-                string theme = (this.IsDefaultTheme) ? NAME_DEFAULT_THEME : this.ThemeName;
-                sb.AppendFormat("ËùÑ¡Ö÷Ìâ£º{0}", theme); sb.Append(Environment.NewLine);
-                sb.AppendFormat("·Ö±æÂÊÉè¶¨£º{0}x{1}", this._width, this._height);
+                string theme = (this.IsDefaultTheme) ? DEFAULT_THEME_NAME : this.ThemeName;
+                sb.AppendFormat(Localize("æ‰€é€‰ä¸»é¢˜ï¼š{0}"), theme); sb.Append(Environment.NewLine);
+                sb.AppendFormat(Localize("åˆ†è¾¨ç‡è®¾å®šï¼š{0}x{1}"), this._width, this._height);
                 ProjectProperty info = this.ThemeInfo;
                 if (info.width != _width || info.height != this._height)
                 {
-                    sb.AppendFormat(" (·ÇÔ­Ê¼·Ö±æÂÊ)");
+                    sb.AppendFormat(Localize(" (éåŸå§‹åˆ†è¾¨ç‡)"));
                 }
                 sb.Append(Environment.NewLine);
             }
 
             sb.Append(Environment.NewLine);
-            sb.AppendFormat("ÏîÄ¿Ãû³Æ£º{0}", this._projectName);sb.Append(Environment.NewLine);
-            sb.AppendFormat("ÏîÄ¿Î»ÖÃ£º{0}", this.ProjectFolder); sb.Append(Environment.NewLine);
+            sb.AppendFormat(Localize("é¡¹ç›®åç§°ï¼š{0}"), this._projectName);sb.Append(Environment.NewLine);
+            sb.AppendFormat(Localize("é¡¹ç›®ä½ç½®ï¼š{0}"), this.ProjectFolder); sb.Append(Environment.NewLine);
             
             sb.Append(Environment.NewLine);
-            sb.AppendFormat("Ëõ·Å²ßÂÔ£º{0}", this._scaler); sb.Append(Environment.NewLine);
-            sb.AppendFormat("Ëõ·ÅÖÊÁ¿£º{0}", this._quality); sb.Append(Environment.NewLine);
-            sb.AppendFormat("NVLMakerÄ¿Â¼£º{0}", this.BaseFolder);sb.Append(Environment.NewLine);
+            sb.AppendFormat(Localize("ç¼©æ”¾ç­–ç•¥ï¼š{0}"), this._scaler); sb.Append(Environment.NewLine);
+            sb.AppendFormat(Localize("ç¼©æ”¾è´¨é‡ï¼š{0}"), this._quality); sb.Append(Environment.NewLine);
+            sb.AppendFormat(Localize("NVLMakerç›®å½•ï¼š{0}"), this.BaseFolder);sb.Append(Environment.NewLine);
             return sb.ToString();
         }
 
-        // ´ÓDataÄ¿Â¼ÏÂ¶ÁÈ¡ÊôĞÔ
+        // ä»Dataç›®å½•ä¸‹è¯»å–å±æ€§
         private ProjectProperty ReadInfo(string dataFolder, string setting)
         {
-            // Ö±½Ó·µ»ØÉÏÒ»´Î¶ÁÈ¡µÄÖµ
+            // ç›´æ¥è¿”å›ä¸Šä¸€æ¬¡è¯»å–çš„å€¼
             if (this._info != null)
             {
                 return this._info;
@@ -649,7 +655,7 @@ namespace Wizard
             ProjectProperty info = new ProjectProperty();
             this._info = info;
 
-            // ¶ÁÈ¡readmeÎÄ¼ş×÷ÎªÏÔÊ¾ÄÚÈİ
+            // è¯»å–readmeæ–‡ä»¶ä½œä¸ºæ˜¾ç¤ºå†…å®¹
             try
             {
                 string readmefile = Path.Combine(dataFolder, UI_README);
@@ -674,19 +680,19 @@ namespace Wizard
             }
             catch (System.Exception e)
             {
-                // ³ö´íµÄ²»±£Áô
+                // å‡ºé”™çš„ä¸ä¿ç•™
                 this._info = null;
                 info.readme = e.Message;
             }
 
-            // ¶ÁÈ¡ÉèÖÃÎÄ¼ş
+            // è¯»å–è®¾ç½®æ–‡ä»¶
             try
             {
                 info.LoadSetting(setting);
             }
             catch (System.Exception e)
             {
-                // ³ö´íµÄ²»±£Áô
+                // å‡ºé”™çš„ä¸ä¿ç•™
                 this._info = null;
                 info.readme = e.Message;
             }
@@ -694,16 +700,16 @@ namespace Wizard
             return info;
         }
 
-        // ¶ÁÈ¡»ù´¡Ä£°åµÄÅäÖÃ
+        // è¯»å–åŸºç¡€æ¨¡æ¿çš„é…ç½®
         public ProjectProperty ReadBaseTemplateInfo()
         {
-            // Èç¹ûÑ¡µÄÊÇÄ¬ÈÏµÄÖ÷Ìâ£¬Ôò·µ»ØÖ÷ÌâÊôĞÔ
+            // å¦‚æœé€‰çš„æ˜¯é»˜è®¤çš„ä¸»é¢˜ï¼Œåˆ™è¿”å›ä¸»é¢˜å±æ€§
             if(this.IsDefaultTheme)
             {
                 return this.ThemeInfo;
             }
 
-            // ÕâÀï¾Í²»¶ÁreadmeÁË£¬Ò²²»×ö±£´æ£¬Ã¿´Îµ÷ÓÃ¶¼´ÓÎÄ¼ş¶ÁÒ»´Î
+            // è¿™é‡Œå°±ä¸è¯»readmeäº†ï¼Œä¹Ÿä¸åšä¿å­˜ï¼Œæ¯æ¬¡è°ƒç”¨éƒ½ä»æ–‡ä»¶è¯»ä¸€æ¬¡
             string file = Path.Combine(this.BaseTemplateFolder + DATA_FOLDER, UI_SETTING);
             ProjectProperty info = new ProjectProperty();
             try
@@ -718,10 +724,10 @@ namespace Wizard
         }
     }
 
-    // ¸ù¾İÏîÄ¿ÅäÖÃ×ª»»ÏîÄ¿ÎÄ¼ş
+    // æ ¹æ®é¡¹ç›®é…ç½®è½¬æ¢é¡¹ç›®æ–‡ä»¶
     class WizardConverter : ResConverter
     {
-        #region ÊÂ¼ş£ºLogging¼°ReportÏûÏ¢Í¨Öª
+        #region äº‹ä»¶ï¼šLoggingåŠReportæ¶ˆæ¯é€šçŸ¥
         public class MessageEventArgs : EventArgs
         {
             public readonly string msg;
@@ -730,10 +736,10 @@ namespace Wizard
                 this.msg = msg;
             }
         }
-        // ÏûÏ¢Í¨ÖªÏìÓ¦º¯Êı
+        // æ¶ˆæ¯é€šçŸ¥å“åº”å‡½æ•°
         public delegate void MessageHandler(WizardConverter sender, MessageEventArgs e);
         
-        // LoggingÊÂ¼ş
+        // Loggingäº‹ä»¶
         public event MessageHandler LoggingEvent;
         protected void OnLogging(string msg)
         {
@@ -743,7 +749,7 @@ namespace Wizard
             }
         }
 
-        // ´íÎóÏûÏ¢Í¨ÖªÊÂ¼ş
+        // é”™è¯¯æ¶ˆæ¯é€šçŸ¥äº‹ä»¶
         public event MessageHandler ErrorEvent;
         protected void OnError(string msg)
         {
@@ -761,36 +767,36 @@ namespace Wizard
             _config = config;
         }
 
-        // ¸ù¾İÅäÖÃ´´½¨Ä¿±êÏîÄ¿
+        // æ ¹æ®é…ç½®åˆ›å»ºç›®æ ‡é¡¹ç›®
         public void Start()
         {
             if (_config.IsModifyProject)
             {
-                // ´ÓÅäÖÃÖĞ¶ÁÈ¡Ä¿±ê´óĞ¡
+                // ä»é…ç½®ä¸­è¯»å–ç›®æ ‡å¤§å°
                 int dw = _config._width, dh = _config._height;
 
-                // ´ÓÏîÄ¿×ÔÉíµÄÎÄ¼ş¼Ğ×ª»»
+                // ä»é¡¹ç›®è‡ªèº«çš„æ–‡ä»¶å¤¹è½¬æ¢
                 string project = _config.ProjectFolder;
 
-                // ¶ÁÈ¡ÏîÄ¿Ô­Ê¼ÅäÖÃ
+                // è¯»å–é¡¹ç›®åŸå§‹é…ç½®
                 ProjectProperty projInfo = _config.ProjectInfo;
                 int sw = projInfo.width, sh = projInfo.height;
 
                 ConvertFiles(project, sw, sh, project, dw, dh);
 
-                // ĞŞÕıËùÓĞ×ø±ê
+                // ä¿®æ­£æ‰€æœ‰åæ ‡
                 AdjustSettings(sw, sh);
             }
             else
             {
-                // ´ÓÅäÖÃÖĞ¶ÁÈ¡Ä¿±ê´óĞ¡
+                // ä»é…ç½®ä¸­è¯»å–ç›®æ ‡å¤§å°
                 int dw = _config._width, dh = _config._height;
 
-                // ÏÈ´Ó»ù´¡Ä£°åÄ¿Â¼¿½±´ÎÄ¼şµ½ÏîÄ¿Ä¿Â¼
+                // å…ˆä»åŸºç¡€æ¨¡æ¿ç›®å½•æ‹·è´æ–‡ä»¶åˆ°é¡¹ç›®ç›®å½•
                 string template = _config.BaseTemplateFolder;
                 string project = _config.ProjectFolder;
 
-                // ¶ÁÈ¡»ù´¡Ä£°åµÄÅäÖÃ
+                // è¯»å–åŸºç¡€æ¨¡æ¿çš„é…ç½®
                 ProjectProperty baseInfo = _config.ReadBaseTemplateInfo();
 
                 int sw = baseInfo.width;
@@ -800,13 +806,13 @@ namespace Wizard
 
                 ConvertFiles(template, sw, sh, project, dw, dh);
 
-                // ĞŞÕıËùÓĞ×ø±ê£¬Ğ´ÈëÏîÄ¿Ãû³Æ
+                // ä¿®æ­£æ‰€æœ‰åæ ‡ï¼Œå†™å…¥é¡¹ç›®åç§°
                 AdjustSettings(sw, sh);
 
-                // Èç¹ûÑ¡ÔñÁË·ÇÄ¬ÈÏÖ÷Ìâ£¬ÔÙ´ÓÖ÷ÌâÄ¿Â¼¿½±´ÎÄ¼şµ½ÏîÄ¿×ÊÁÏÎÄ¼ş¼Ğ
+                // å¦‚æœé€‰æ‹©äº†éé»˜è®¤ä¸»é¢˜ï¼Œå†ä»ä¸»é¢˜ç›®å½•æ‹·è´æ–‡ä»¶åˆ°é¡¹ç›®èµ„æ–™æ–‡ä»¶å¤¹
                 if (_config.ThemeFolder != template)
                 {
-                    // ¶ÁÈ¡ËùÑ¡Ö÷ÌâÅäÖÃ
+                    // è¯»å–æ‰€é€‰ä¸»é¢˜é…ç½®
                     ProjectProperty themeInfo = _config.ThemeInfo;
 
                     sw = themeInfo.width;
@@ -814,65 +820,65 @@ namespace Wizard
                     sh = themeInfo.height;
                     if (sh <= 0) sh = WizardConfig.DEFAULT_HEIGHT;
 
-                    // Ö÷ÌâµÄÎÄ¼şÖ±½Ó¿½ÈëÊı¾İÄ¿Â¼
+                    // ä¸»é¢˜çš„æ–‡ä»¶ç›´æ¥æ‹·å…¥æ•°æ®ç›®å½•
                     ConvertFiles(_config.ThemeFolder, sw, sh, _config.ProjectDataFolder, dw, dh);
 
-                    // ĞŞÕıËùÓĞ×ø±ê£¬Ğ´ÈëÏîÄ¿Ãû³Æ
+                    // ä¿®æ­£æ‰€æœ‰åæ ‡ï¼Œå†™å…¥é¡¹ç›®åç§°
                     AdjustSettings(sw, sh);
                 }
             }
         }
 
-        // ¿½±´²¢Ëõ·ÅÎÄ¼ş
+        // æ‹·è´å¹¶ç¼©æ”¾æ–‡ä»¶
         void ConvertFiles(string srcPath, int sw, int sh, string destPath, int dw, int dh)
         {
-            // Ô´ÎÄ¼şÁĞ±í
+            // æºæ–‡ä»¶åˆ—è¡¨
             List<string> srcFiles = new List<string>();
             try
             {
                 bool ignoreCopy = (srcPath.ToLower() == destPath.ToLower());
 
-                // ½¨Á¢Ä¿Â¼²¢»ñÈ¡ÎÄ¼şÁĞ±í
+                // å»ºç«‹ç›®å½•å¹¶è·å–æ–‡ä»¶åˆ—è¡¨
                 CreateDir(srcPath, destPath, srcFiles);
 
-                // ½¨Á¢Í¼Æ¬×ª»»ÅäÖÃ£¬ÓÃÓÚ¼ÇÂ¼ĞèÒª×ª»»µÄÍ¼Æ¬ÎÄ¼ş£¬ÆäËûÎÄ¼şÔòÖ±½Ó¿½±´
+                // å»ºç«‹å›¾ç‰‡è½¬æ¢é…ç½®ï¼Œç”¨äºè®°å½•éœ€è¦è½¬æ¢çš„å›¾ç‰‡æ–‡ä»¶ï¼Œå…¶ä»–æ–‡ä»¶åˆ™ç›´æ¥æ‹·è´
                 ResConfig resource = new ResConfig();
                 resource.path = srcPath;
-                resource.name = WizardConfig.NAME_DEFAULT_THEME;
+                resource.name = WizardConfig.DEFAULT_THEME_NAME;
 
-                // ±éÀúËùÓĞÎÄ¼ş
+                // éå†æ‰€æœ‰æ–‡ä»¶
                 int cutLen = srcPath.Length;
                 foreach (string srcfile in srcFiles)
                 {
-                    // ½ØµôÄ£°åÄ¿Â¼ÒÔ¾¶»ñÈ¡Ïà¶ÔÂ·¾¶
+                    // æˆªæ‰æ¨¡æ¿ç›®å½•ä»¥å¾„è·å–ç›¸å¯¹è·¯å¾„
                     string relFile = srcfile.Substring(cutLen + 1);
 
-                    // È¡µÃÀ©Õ¹Ãû
+                    // å–å¾—æ‰©å±•å
                     string ext = Path.GetExtension(relFile).ToLower();
 
-                    if ( // ¿í¸ßÈç¹ûºÍÔ´ÎÄ¼şÏàÍ¬ÄÇ¾Í²»ÓÃ×ª»»ÁË
+                    if ( // å®½é«˜å¦‚æœå’Œæºæ–‡ä»¶ç›¸åŒé‚£å°±ä¸ç”¨è½¬æ¢äº†
                          (sw != dw || sh != dh) &&
-                        // ºöÂÔÄ³Ğ©Í¼Æ¬
+                        // å¿½ç•¥æŸäº›å›¾ç‰‡
                          !WizardConfig.IgnorePicture(relFile) &&
-                        // Ö»×ª»»ÕâĞ©À©Õ¹Ãû¶ÔÓ¦µÄÎÄ¼ş
+                        // åªè½¬æ¢è¿™äº›æ‰©å±•åå¯¹åº”çš„æ–‡ä»¶
                          (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp"))
                     {
-                        // ÊÇÍ¼Æ¬ÔòÌí¼Óµ½×ª»»Æ÷ÖĞ
+                        // æ˜¯å›¾ç‰‡åˆ™æ·»åŠ åˆ°è½¬æ¢å™¨ä¸­
                         resource.files.Add(new ResFile(relFile));
                     }
                     else if (!ignoreCopy)
                     {
-                        // Ö±½Ó¿½±´
-                        OnLogging(string.Format("¿½±´{0}", relFile));
+                        // ç›´æ¥æ‹·è´
+                        OnLogging(string.Format(Localize("æ‹·è´{0}"), relFile));
                         File.Copy(srcfile, Path.Combine(destPath, relFile), true);
                     }
                 }
 
-                OnLogging("Í¼Æ¬×ª»»ÖĞ¡­¡­");
+                OnLogging(Localize("å›¾ç‰‡è½¬æ¢ä¸­â€¦â€¦"));
 
                 if (resource.files.Count > 0)
                 {
-                    // µ÷ÓÃ×ÊÔ´×ª»»Æ÷·½·¨£¬²¢¿ªÊ¼×ª»»
+                    // è°ƒç”¨èµ„æºè½¬æ¢å™¨æ–¹æ³•ï¼Œå¹¶å¼€å§‹è½¬æ¢
                     Start(resource, destPath, sw, sh, dw, dh);
                 }
 
@@ -883,7 +889,7 @@ namespace Wizard
             }
         }
 
-        // ĞŞÕıÄ¿±êÏîÄ¿ÎÄ¼ş¼ĞÖĞµÄÅäÖÃ
+        // ä¿®æ­£ç›®æ ‡é¡¹ç›®æ–‡ä»¶å¤¹ä¸­çš„é…ç½®
         void AdjustSettings(int sw, int sh)
         {
             string dataPath = _config.ProjectDataFolder;
@@ -897,7 +903,7 @@ namespace Wizard
             }
             catch (System.Exception e)
             {
-                OnError("ĞŞ¸Äsetting.tjsÊ§°Ü:" + e.Message);
+                OnError(Localize("ä¿®æ”¹setting.tjså¤±è´¥:") + e.Message);
             }
 
             try
@@ -906,10 +912,10 @@ namespace Wizard
             }
             catch (System.Exception e)
             {
-                OnError("ĞŞ¸ÄConfig.tjsÊ§°Ü:" + e.Message);
+                OnError(Localize("ä¿®æ”¹Config.tjså¤±è´¥:") + e.Message);
             }
 
-            // ¼ì²éÊÇ·ñĞèÒª×ª»»
+            // æ£€æŸ¥æ˜¯å¦éœ€è¦è½¬æ¢
             if (sw != dw || sh != dh)
             {
                 try
@@ -918,12 +924,12 @@ namespace Wizard
                 }
                 catch (System.Exception e)
                 {
-                    OnError("ĞŞ¸Ä½çÃæ²¼¾ÖÎÄ¼şÊ§°Ü:" + e.Message);
+                    OnError(Localize("ä¿®æ”¹ç•Œé¢å¸ƒå±€æ–‡ä»¶å¤±è´¥:") + e.Message);
                 }
             }
         }
 
-        // ĞŞ¸Ä×ÖµäÎÄ¼ş
+        // ä¿®æ”¹å­—å…¸æ–‡ä»¶
         static void ModifyDict(TjsDict dict, int sw, int sh, int dw, int dh)
         {
             double scaleX = (double)dw / sw;
@@ -939,7 +945,7 @@ namespace Wizard
             TjsHelper.ScaleInteger(dict, "margint", scaleY);
             TjsHelper.ScaleInteger(dict, "marginb", scaleY);
 
-            // ĞŞ¸ÄlocateÊı×é
+            // ä¿®æ”¹locateæ•°ç»„
             TjsHelper.ScalePosArray(dict, "locate", scaleX, scaleY);
 
             foreach (KeyValuePair<string, TjsValue> kv in dict.val)
@@ -952,10 +958,10 @@ namespace Wizard
             }
         }
 
-        // ĞŞ¸ÄUI²¼¾ÖÎÄ¼ş
+        // ä¿®æ”¹UIå¸ƒå±€æ–‡ä»¶
         static void ModifyLayout(string dataPath, int sw, int sh, int dh, int dw)
         {
-            // ¸üĞÂlayout
+            // æ›´æ–°layout
             string[] layouts = Directory.GetFiles(dataPath, WizardConfig.UI_LAYOUT);
             foreach (string layout in layouts)
             {
@@ -965,7 +971,7 @@ namespace Wizard
                 {
                     ModifyDict(setting, sw, sh, dw, dh);
 
-                    // ¶ÔÕâ¸öÎÄ¼şÀïµÄ°´Å¥×÷ÌØÊâ´¦Àí
+                    // å¯¹è¿™ä¸ªæ–‡ä»¶é‡Œçš„æŒ‰é’®ä½œç‰¹æ®Šå¤„ç†
                     if(layout.ToLower().EndsWith("uislpos.tjs"))
                     {
                         double scaleX = (double)dw / sw;
@@ -980,10 +986,10 @@ namespace Wizard
             }
         }
 
-        // ĞŞ¸Äconfig.tjs
+        // ä¿®æ”¹config.tjs
         static void ModifyConfig(string dataPath, string title, int sw, int sh, int dh, int dw)
         {
-            // ¸üĞÂconfig
+            // æ›´æ–°config
             string configFile = Path.Combine(dataPath, WizardConfig.UI_CONFIG);
             if (File.Exists(configFile))
             {
@@ -1012,12 +1018,12 @@ namespace Wizard
                         }
                         else if (regThumb.IsMatch(line))
                         {
-                            // ÁÙÊ±´´½¨Ò»¸öÊôĞÔ¶ÔÏóÓÃÓÚ¶ÁÈ¡setting
+                            // ä¸´æ—¶åˆ›å»ºä¸€ä¸ªå±æ€§å¯¹è±¡ç”¨äºè¯»å–setting
                             string settingFile = Path.Combine(dataPath, WizardConfig.UI_SETTING);
                             ProjectProperty info = new ProjectProperty();
                             info.LoadSetting(settingFile);
 
-                            // ĞŞÕıËõÂÔÍ¼
+                            // ä¿®æ­£ç¼©ç•¥å›¾
                             int tw = info.thumbnailwidth;
                             if (tw > 0)
                             {
@@ -1038,13 +1044,13 @@ namespace Wizard
             }
         }
 
-        // ĞŞ¸Äsetting.tjs
+        // ä¿®æ”¹setting.tjs
         static void ModifySetting(string dataPath, string title, int sw, int sh, int dh, int dw)
         {
-            // ¸üĞÂsetting
+            // æ›´æ–°setting
             string settingFile = Path.Combine(dataPath, WizardConfig.UI_SETTING);
             
-            // ÁÙÊ±´´½¨Ò»¸öÊôĞÔ¶ÔÏóÓÃÓÚ¶ÁÈ¡setting
+            // ä¸´æ—¶åˆ›å»ºä¸€ä¸ªå±æ€§å¯¹è±¡ç”¨äºè¯»å–setting
             ProjectProperty info = new ProjectProperty();
             info.LoadSetting(settingFile);
             TjsDict setting = info.setting;
@@ -1055,7 +1061,7 @@ namespace Wizard
                 setting.SetNumber("width", dw);
                 setting.SetNumber("height", dh);
 
-                // ĞŞÕıËõÂÔÍ¼¿í¶È
+                // ä¿®æ­£ç¼©ç•¥å›¾å®½åº¦
                 int tw = info.thumbnailwidth;
                 if (tw > 0)
                 {
@@ -1067,7 +1073,7 @@ namespace Wizard
             }
         }
 
-        // ¹¤¾ßº¯Êı£º´´½¨ÎÄ¼ş¼Ğ£¬²¢¼ÇÂ¼ÆäÖĞµÄÎÄ¼ş
+        // å·¥å…·å‡½æ•°ï¼šåˆ›å»ºæ–‡ä»¶å¤¹ï¼Œå¹¶è®°å½•å…¶ä¸­çš„æ–‡ä»¶
         static void CreateDir(string source, string dest, List<string> files)
         {
             if (!Directory.Exists(dest))
@@ -1084,7 +1090,7 @@ namespace Wizard
             string[] subDirs = Directory.GetDirectories(source);
             if (subDirs.Length == 0)
             {
-                // Ä¾ÓĞÕÒµ½ÈÎºÎ×ÓÄ¿Â¼
+                // æœ¨æœ‰æ‰¾åˆ°ä»»ä½•å­ç›®å½•
                 return;
             }
 

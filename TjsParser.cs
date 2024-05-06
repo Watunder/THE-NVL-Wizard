@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Tjs
 {
-    #region TjsÊı¾İÀàĞÍ
+    #region Tjsæ•°æ®ç±»å‹
     public enum TjsType
     {
         Void,
@@ -17,22 +17,22 @@ namespace Tjs
         Dictionary,
     }
 
-    // »ùÀà
+    // åŸºç±»
     public class TjsValue
     {
         public TjsType t;
 
-        #region Ëõ½ø
-        // ÉèÖÃÈ«¾ÖËõ½øµ¥Ôª
+        #region ç¼©è¿›
+        // è®¾ç½®å…¨å±€ç¼©è¿›å•å…ƒ
         public static string Indent
         {
             get { return _indent; }
             set { _indent = value; }
         }
 
-        // Ëõ½øµ¥Ôª
+        // ç¼©è¿›å•å…ƒ
         protected static string _indent = " ";
-        // Ëõ½ø¶ÑÕ»
+        // ç¼©è¿›å †æ ˆ
         protected static string _indentStack = string.Empty;
         #endregion
 
@@ -59,7 +59,7 @@ namespace Tjs
         }
     }
 
-    // ¿ÕÖµ
+    // ç©ºå€¼
     public class TjsVoid : TjsValue
     {
         public TjsVoid()
@@ -73,7 +73,7 @@ namespace Tjs
         }
     }
 
-    // ×Ö·û´®
+    // å­—ç¬¦ä¸²
     public class TjsString : TjsValue
     {
         public readonly string val;
@@ -97,7 +97,7 @@ namespace Tjs
         }
     }
 
-    // Êı×Ö
+    // æ•°å­—
     public class TjsNumber : TjsValue
     {
         public readonly double val;
@@ -119,7 +119,7 @@ namespace Tjs
         }
     }
 
-    // Êı×é
+    // æ•°ç»„
     public class TjsArray : TjsValue
     {
         public readonly List<TjsValue> val;
@@ -134,35 +134,35 @@ namespace Tjs
         {
             StringBuilder buf = new StringBuilder();
 
-            // ±£´æµ±Ç°Ëõ½ø²¢Ôö¼ÓËõ½ø
+            // ä¿å­˜å½“å‰ç¼©è¿›å¹¶å¢åŠ ç¼©è¿›
             string savedIndent = _indentStack;
             if (_indent != null)
             {
                 _indentStack += _indent;
             }
 
-            // µ±Ç°Ä¬ÈÏËõ½ø
+            // å½“å‰é»˜è®¤ç¼©è¿›
             string currentIndent = _indentStack;
 
             //buf.AppendLine("(const) [");
-			buf.AppendLine("["); // ¼æÈİ2.28
+			buf.AppendLine("["); // å…¼å®¹2.28
             int count = 0;
             foreach (TjsValue v in this.val)
             {
                 buf.Append(currentIndent); buf.Append(v.ToString());
 
-                // Ä©Î²×·¼Ó¶ººÅ·Ö¸ô·û
+                // æœ«å°¾è¿½åŠ é€—å·åˆ†éš”ç¬¦
                 if (++count < this.val.Count) buf.AppendLine(",");
             }
             buf.AppendLine(""); buf.Append(savedIndent); buf.Append("]");
 
-            // »Ö¸´Ëõ½ø
+            // æ¢å¤ç¼©è¿›
             _indentStack = savedIndent;
             return buf.ToString();
         }
     }
 
-    // ×Öµä
+    // å­—å…¸
     public class TjsDict : TjsValue
     {
         public readonly Dictionary<string, TjsValue> val;
@@ -210,7 +210,7 @@ namespace Tjs
             int split = namepath.IndexOf("/");
             if (split < 0)
             {
-                // ¶ÁÈ¡¾ßÌåÖµ
+                // è¯»å–å…·ä½“å€¼
                 TjsValue v = null;
                 this.val.TryGetValue(namepath, out v);
                 return v;
@@ -238,7 +238,7 @@ namespace Tjs
             int split = namepath.IndexOf("/");
             if(split < 0)
             {
-                // ·µ»Ø×îµ×²ãµÄdict
+                // è¿”å›æœ€åº•å±‚çš„dict
                 this.val[namepath] = value;
                 return this;
             }
@@ -264,52 +264,52 @@ namespace Tjs
         {
             StringBuilder buf = new StringBuilder();
 
-            // ±£´æµ±Ç°Ëõ½ø²¢Ôö¼ÓËõ½ø
+            // ä¿å­˜å½“å‰ç¼©è¿›å¹¶å¢åŠ ç¼©è¿›
             string savedIndent = _indentStack;
             if (_indent != null)
             {
                 _indentStack += _indent;
             }
 
-            // µ±Ç°Ä¬ÈÏËõ½ø
+            // å½“å‰é»˜è®¤ç¼©è¿›
             string currentIndent = _indentStack;
 
             //buf.AppendLine("(const) %[");
-			buf.AppendLine("%["); // ¼æÈİ2.28
+			buf.AppendLine("%["); // å…¼å®¹2.28
             int count = 0;
             foreach (KeyValuePair<string, TjsValue> kv in this.val)
             {
                 buf.Append(currentIndent); buf.Append("\""); buf.Append(kv.Key);
                 buf.Append("\" => "); buf.Append(kv.Value.ToString());
 
-                // Ä©Î²×·¼Ó¶ººÅ·Ö¸ô·û
+                // æœ«å°¾è¿½åŠ é€—å·åˆ†éš”ç¬¦
                 if (++count < this.val.Count) buf.AppendLine(",");
             }
             buf.AppendLine(""); buf.Append(savedIndent); buf.Append("]");
 
-            // »Ö¸´Ëõ½ø
+            // æ¢å¤ç¼©è¿›
             _indentStack = savedIndent;
             return buf.ToString();
         }
     }
     #endregion
 
-    // TjsÊı¾İ½âÎöÆ÷
+    // Tjsæ•°æ®è§£æå™¨
     class TjsParser
     {
-        // ÒÔÄ¬ÈÏbuffer´óĞ¡³õÊ¼»¯
+        // ä»¥é»˜è®¤bufferå¤§å°åˆå§‹åŒ–
         public TjsParser()
         {
             Reset(DEFAULT_BUFFER_SIZE);
         }
 
-        // ÒÔÖ¸¶¨buffer´óĞ¡³õÊ¼»¯
+        // ä»¥æŒ‡å®šbufferå¤§å°åˆå§‹åŒ–
         public TjsParser(int bufferSize)
         {
             Reset(bufferSize);
         }
 
-        #region Tjs·ûºÅµ¥Ôª
+        #region Tjsç¬¦å·å•å…ƒ
         public enum TokenType
         {
             Unknow,
@@ -347,55 +347,55 @@ namespace Tjs
         }
         #endregion
 
-        #region ´ÓÊı¾İÁ÷ÖĞ½âÎöTjs·ûºÅ
+        #region ä»æ•°æ®æµä¸­è§£æTjsç¬¦å·
         Regex _regNumber = new Regex(@"[0-9\.]");
         Regex _regNonChar = new Regex(@"\s");
         Regex _regSeprater = new Regex(@"[,]");
 
-        // Ä¬ÈÏÊ¹ÓÃµÄbuffer´óĞ¡
+        // é»˜è®¤ä½¿ç”¨çš„bufferå¤§å°
         const int DEFAULT_BUFFER_SIZE = 8192;
         
-        // »º³å¶ÁÈ¡µÄÎÄ×ÖÁ÷
+        // ç¼“å†²è¯»å–çš„æ–‡å­—æµ
         char[] _buffer;
 
-        // Ö¸ÏòbufferÖĞ½«Òª¶ÁÈ¡µÄ×Ö·û
+        // æŒ‡å‘bufferä¸­å°†è¦è¯»å–çš„å­—ç¬¦
         int _pos;
         
-        // ÒÑ½âÎöµÄ×Ö·ûÊı
+        // å·²è§£æçš„å­—ç¬¦æ•°
         int _parsed;
 
-        // bufferÖĞµÄÊµ¼ÊÓĞĞ§³¤¶È
+        // bufferä¸­çš„å®é™…æœ‰æ•ˆé•¿åº¦
         int _len;
 
-        // ÖØÖÃËùÓĞ±äÁ¿
+        // é‡ç½®æ‰€æœ‰å˜é‡
         void Reset(int size)
         {
-            // ´¢´æ¶ÁÈ¡µÄÎÄ×ÖÁ÷
+            // å‚¨å­˜è¯»å–çš„æ–‡å­—æµ
             if (_buffer == null || _buffer.Length != size)
             {
                 _buffer = new char[size];
             }
 
-            // Ö¸ÏòbufferÖĞ½«Òª¶ÁÈ¡µÄ×Ö·û£¬³õÊ¼×´Ì¬¼ÙÉèBufferÒÑÂú
+            // æŒ‡å‘bufferä¸­å°†è¦è¯»å–çš„å­—ç¬¦ï¼Œåˆå§‹çŠ¶æ€å‡è®¾Bufferå·²æ»¡
             _pos = size;
 
-            // ÒÑ´¢´æµÄ×Ö·ûÊı£¬ÅäºÏ_posµÄ³õÖµ
+            // å·²å‚¨å­˜çš„å­—ç¬¦æ•°ï¼Œé…åˆ_posçš„åˆå€¼
             _parsed = -size;
 
-            // bufferÖĞµÄÊµ¼ÊÓĞĞ§³¤¶È
+            // bufferä¸­çš„å®é™…æœ‰æ•ˆé•¿åº¦
             _len = 0;
 
-            // ÖØÖÃ´íÎóĞÅÏ¢
+            // é‡ç½®é”™è¯¯ä¿¡æ¯
             _error = false;
         }
 
-        // ÒÑ½âÎöµÄ×Ö·ûÊı
+        // å·²è§£æçš„å­—ç¬¦æ•°
         public int Parsed
         {
             get { return _parsed + _pos; }
         }
 
-        // ¶ÁÈ¡ÎÄ×ÖÁ÷²¢Ìî³äbufferÎ´ÂúµÄ²¿·Ö
+        // è¯»å–æ–‡å­—æµå¹¶å¡«å……bufferæœªæ»¡çš„éƒ¨åˆ†
         void UpdateBuffer(TextReader r)
         {
             for (int i = _pos; i < _len; i++)
@@ -403,17 +403,17 @@ namespace Tjs
                 _buffer[i - _pos] = _buffer[i];
             }
 
-            // ¼ÆËãĞÂµÄÆğÊ¼µã
+            // è®¡ç®—æ–°çš„èµ·å§‹ç‚¹
             int start = _len > _pos ? _len - _pos : 0;
 
-            // Í³¼Æ½âÎöµÄ×Ö·ûÊı
+            // ç»Ÿè®¡è§£æçš„å­—ç¬¦æ•°
             _parsed += _pos;
 
-            // ÖØÖÃµ±Ç°Î»ÖÃ
+            // é‡ç½®å½“å‰ä½ç½®
             _pos = 0;
             _len = start;
 
-            // Èç¹û»¹ÓĞÔò¼ÌĞø¶ÁÈ¡µ½bufferÖĞ
+            // å¦‚æœè¿˜æœ‰åˆ™ç»§ç»­è¯»å–åˆ°bufferä¸­
             if (r.Peek() >= 0)
             {
                 _len += r.ReadBlock(_buffer, start, _buffer.Length - start);
@@ -422,72 +422,72 @@ namespace Tjs
 
         public Token GetNext(TextReader r)
         {
-            // Èç¹ûbufferÒÑÂúÔòĞèÒª¸üĞÂ
+            // å¦‚æœbufferå·²æ»¡åˆ™éœ€è¦æ›´æ–°
             if (_pos >= _buffer.Length)
             {
                 UpdateBuffer(r);
             }
 
             TokenType t = TokenType.Unknow;
-            int head = _pos; // Ö¸ÏòµÚÒ»¸öÓĞĞ§×Ö·û
-            int tail = -1; // Ö¸Ïò×îºóÒ»¸öÓĞĞ§×Ö·û
+            int head = _pos; // æŒ‡å‘ç¬¬ä¸€ä¸ªæœ‰æ•ˆå­—ç¬¦
+            int tail = -1; // æŒ‡å‘æœ€åä¸€ä¸ªæœ‰æ•ˆå­—ç¬¦
 
             StringBuilder stored = new StringBuilder();
 
             while (_pos < _len)
             {
-                // ¶ÁÈ¡Ò»¸ö×Ö·û£¬×ª³É×Ö´®ÊÇÎªÁËÆ¥ÅäÕıÔò±í´ïÊ½
+                // è¯»å–ä¸€ä¸ªå­—ç¬¦ï¼Œè½¬æˆå­—ä¸²æ˜¯ä¸ºäº†åŒ¹é…æ­£åˆ™è¡¨è¾¾å¼
                 string cur = _buffer[_pos++].ToString();
 
                 //
-                // Ê¹ÓÃif-elseÊÇÒòÎªÒªÓÃbreakÀ´ÍË³öwhileÑ­»·
+                // ä½¿ç”¨if-elseæ˜¯å› ä¸ºè¦ç”¨breakæ¥é€€å‡ºwhileå¾ªç¯
                 //
                 if(t == TokenType.Unknow)
                 {
-                    // ºöÂÔÕâ¸öÎŞĞ§×Ö·û
+                    // å¿½ç•¥è¿™ä¸ªæ— æ•ˆå­—ç¬¦
                     if (_regNonChar.IsMatch(cur)) { head++; }
-                    // ·¢ÏÖ×Ö·û´®
+                    // å‘ç°å­—ç¬¦ä¸²
                     else if (cur[0] == '"') { t = TokenType.String; }
-                    // ·¢ÏÖÊı×Ö
+                    // å‘ç°æ•°å­—
                     else if (_regNumber.IsMatch(cur)) { t = TokenType.Number; }
-                    // ÆäÓà½âÊÍÎª·ûºÅ
+                    // å…¶ä½™è§£é‡Šä¸ºç¬¦å·
                     else { t = TokenType.Symbol; }
                 }
                 else if(t == TokenType.String)
                 {
-                    // ÒÔ´Ë×÷Îª½áÎ²
+                    // ä»¥æ­¤ä½œä¸ºç»“å°¾
                     if (cur[0] == '"') { tail = _pos - 1; break; }
                 }
                 else if (t == TokenType.Number)
                 {
-                    // ºöÂÔÕâ¸öÎŞĞ§×Ö·û
+                    // å¿½ç•¥è¿™ä¸ªæ— æ•ˆå­—ç¬¦
                     if (_regNonChar.IsMatch(cur)) { tail = _pos - 2; break; }
-                    // ±£ÁôÕâ¸ö×Ö·û
+                    // ä¿ç•™è¿™ä¸ªå­—ç¬¦
                     else if (!_regNumber.IsMatch(cur)) { _pos--; tail = _pos - 1; break; }
                 }
                 else if(t == TokenType.Symbol)
                 {
-                    // ºöÂÔÕâ¸öÎŞĞ§×Ö·û
+                    // å¿½ç•¥è¿™ä¸ªæ— æ•ˆå­—ç¬¦
                     if (_regNonChar.IsMatch(cur)) { tail = _pos - 2; break; }
-                    // ±£ÁôÕâ¸ö×Ö·û
+                    // ä¿ç•™è¿™ä¸ªå­—ç¬¦
                     else if (_regSeprater.IsMatch(cur)) { _pos--; tail = _pos - 1; break; }
                 }
 
-                // ¼ì²éÊÇ·ñbufferÒÑÂú
+                // æ£€æŸ¥æ˜¯å¦bufferå·²æ»¡
                 if (_pos >= _buffer.Length)
                 {
                     Debug.Assert(_pos == _buffer.Length, "_pos should not larger than buffer size");
 
                     if (_pos > head)
                     {
-                        // °ÑbufferÖĞÎ´ÍêµÄtoken½øĞĞ´¢´æ
+                        // æŠŠbufferä¸­æœªå®Œçš„tokenè¿›è¡Œå‚¨å­˜
                         stored.Append(_buffer, head, _pos - head);
                     }
 
                     UpdateBuffer(r);
                     head = _pos;
                 }
-                // ¶ÁÈ¡½áÊø
+                // è¯»å–ç»“æŸ
                 else if (_pos >= _len)
                 {
                     Debug.Assert(_pos == _len, "_pos should not larger than actual size");
@@ -496,13 +496,13 @@ namespace Tjs
                 }
             }
 
-            // ×·¼Óµ±Ç°½á¹û
+            // è¿½åŠ å½“å‰ç»“æœ
             if (tail >= head)
             {
                 stored.Append(_buffer, head, tail - head + 1);
             }
 
-            // ·µ»Ø×îÖÕÖµ
+            // è¿”å›æœ€ç»ˆå€¼
             Token token = new Token();
             token.t = t;
             if (stored.Length > 0)
@@ -513,7 +513,7 @@ namespace Tjs
         }
         #endregion
 
-        #region ÏÔÊ¾´íÎóĞÅÏ¢
+        #region æ˜¾ç¤ºé”™è¯¯ä¿¡æ¯
         bool _error;
         public bool IsError
         {
@@ -547,7 +547,7 @@ namespace Tjs
         }
         #endregion
 
-        #region ½âÎöÒ»¸ö×Öµä
+        #region è§£æä¸€ä¸ªå­—å…¸
         enum DictState
         {
             Key,
@@ -559,7 +559,7 @@ namespace Tjs
 
             Dictionary<string, TjsValue> inner = new Dictionary<string, TjsValue>();
 
-            // ³õÊ¼×´Ì¬Îª¶ÁÈ¡key×´Ì¬
+            // åˆå§‹çŠ¶æ€ä¸ºè¯»å–keyçŠ¶æ€
             DictState s = DictState.Key;
             string key = null;
 
@@ -569,33 +569,33 @@ namespace Tjs
 
                 if(s == DictState.Key)
                 {
-                    // ¶ÁÈ¡¼üÖµ
+                    // è¯»å–é”®å€¼
                     if(token.t == TokenType.String && key == null)
                     {
                         TjsString tmp = token.ToTjsString();
                         if(tmp == null)
                         {
-                            // ÎŞĞ§µÄ¼üÖµ
+                            // æ— æ•ˆçš„é”®å€¼
                             ShowError("Invalid Key");
                             break;
                         }
 
-                        // È¥µôË«ÒıºÅ
+                        // å»æ‰åŒå¼•å·
                         key = tmp.val;
                         
                         if(inner.ContainsKey(key))
                         {
-                            // ÖØ¸´µÄ¼üÖµ
+                            // é‡å¤çš„é”®å€¼
                             ShowError("Duplicated Key");
                             break;
                         }
 
-                        // ÇĞ»»µ½¶ÁÈ¡Value×´Ì¬
+                        // åˆ‡æ¢åˆ°è¯»å–ValueçŠ¶æ€
                         s = DictState.Value;
                     }
                     else
                     {
-                        // ´íÎóµÄ¼üÖµ
+                        // é”™è¯¯çš„é”®å€¼
                         ShowError("Expect a Key");
                         break;
                     }
@@ -606,10 +606,10 @@ namespace Tjs
                     {
                         if(key != null && token.val == "=>")
                         {
-                            // ¶ÁÈ¡Ò»¸öÖµ
+                            // è¯»å–ä¸€ä¸ªå€¼
                             TjsValue val = Parse(r);
 
-                            // Ö±½Ó·µ»Ø´íÎó
+                            // ç›´æ¥è¿”å›é”™è¯¯
                             if (val == null) return null;
 
                             inner.Add(key, val);
@@ -617,25 +617,25 @@ namespace Tjs
                         }
                         else if(key == null && token.val == ",")
                         {
-                            // ÇĞ»»Îª¶ÁÈ¡key×´Ì¬
+                            // åˆ‡æ¢ä¸ºè¯»å–keyçŠ¶æ€
                             s = DictState.Key;
                         }
                         else if(key == null && token.val == "]")
                         {
-                            // ¶ÁÈ¡Íê±Ï
+                            // è¯»å–å®Œæ¯•
                             TjsDict ret = new TjsDict(inner);
                             return ret;
                         }
                         else
                         {
-                            // ÎŞĞ§µÄ·ûºÅ
+                            // æ— æ•ˆçš„ç¬¦å·
                             ShowError("Invalid Symbol");
                             break;
                         }
                     }
                     else
                     {
-                        // ´íÎóµÄ·ûºÅ
+                        // é”™è¯¯çš„ç¬¦å·
                         ShowError("Expect a Symbol");
                         break;
                     }
@@ -649,7 +649,7 @@ namespace Tjs
         }
         #endregion
 
-        #region ½âÎöÒ»¸öÊı×é
+        #region è§£æä¸€ä¸ªæ•°ç»„
         TjsArray ParseArray(TextReader r)
         {
             TjsParser.Token token = null;
@@ -658,34 +658,34 @@ namespace Tjs
 
             do
             {
-                // ¶ÁÈ¡Ò»¸öÖµ
+                // è¯»å–ä¸€ä¸ªå€¼
                 TjsValue val = Parse(r);
 
-                // Ö±½Ó·µ»Ø´íÎó
+                // ç›´æ¥è¿”å›é”™è¯¯
                 if (val == null) return null;
 
                 inner.Add(val);
 
-                // ¶ÁÈ¡ÆäºóµÄ·ûºÅ
+                // è¯»å–å…¶åçš„ç¬¦å·
                 token = GetNext(r);
                 if(token.t == TokenType.Symbol)
                 {
                     if(token.val == "]")
                     {
-                        // ¶ÁÈ¡Íê±Ï
+                        // è¯»å–å®Œæ¯•
                         TjsArray ret = new TjsArray(inner);
                         return ret;
                     }
                     else if(token.val != ",")
                     {
-                        // ´íÎóµÄ·ûºÅ
+                        // é”™è¯¯çš„ç¬¦å·
                         ShowError("Expect a Comma");
                         break;
                     }
                 }
                 else
                 {
-                    // ´íÎóµÄ·ûºÅ
+                    // é”™è¯¯çš„ç¬¦å·
                     ShowError("Expect a Symbol");
                     break;
                 }
@@ -698,7 +698,7 @@ namespace Tjs
         }
         #endregion
 
-        #region ½âÎöÒ»¸öTjsValue
+        #region è§£æä¸€ä¸ªTjsValue
         public TjsValue Parse(TextReader r)
         {
             TjsParser.Token token = null;
@@ -707,11 +707,11 @@ namespace Tjs
                 token = GetNext(r);
                 if(token.t == TokenType.Number)
                 {
-                    // ½âÎö³öÊı×Ö
+                    // è§£æå‡ºæ•°å­—
                     TjsNumber ret = token.ToTjsNumber();
                     if (ret == null)
                     {
-                        // Êı×Ö¸ñÊ½´íÎó
+                        // æ•°å­—æ ¼å¼é”™è¯¯
                         ShowError("Invalid Number");
                         break;
                     }
@@ -719,11 +719,11 @@ namespace Tjs
                 }
                 else if(token.t == TokenType.String)
                 {
-                    // ½âÎö³ö×Ö·û´®
+                    // è§£æå‡ºå­—ç¬¦ä¸²
                     TjsString ret = token.ToTjsString();
                     if (ret == null)
                     {
-                        // ×Ö·û´®¸ñÊ½´íÎó
+                        // å­—ç¬¦ä¸²æ ¼å¼é”™è¯¯
                         ShowError("Invalid String");
                         break;
                     }
@@ -731,31 +731,31 @@ namespace Tjs
                 }
                 else if(token.t == TokenType.Symbol)
                 {
-				    // ¼æÈİ2.28
+				    // å…¼å®¹2.28
                     if(token.val == "(const)" || token.val == "int" || token.val == "string")
                     {
-                        // É¶Ò²²»¸É
+                        // å•¥ä¹Ÿä¸å¹²
                     }
                     else if(token.val == "void")
                     {
-                        // ½âÎö³ö¿ÕÖµ
+                        // è§£æå‡ºç©ºå€¼
                         return new TjsVoid();
                     }
                     else if(token.val == "%[")
                     {
-                        // ·µ»Ø×Öµä
+                        // è¿”å›å­—å…¸
                         TjsDict ret = ParseDict(r);
                         return ret;
                     }
                     else if(token.val == "[")
                     {
-                        // ·µ»ØÊı×é
+                        // è¿”å›æ•°ç»„
                         TjsArray ret = ParseArray(r);
                         return ret;
                     }
                     else
                     {
-                        // ÎŞĞ§µÄ·ûºÅ
+                        // æ— æ•ˆçš„ç¬¦å·
                         ShowError("Invalid Symbol");
                         break;
                     }
