@@ -1,6 +1,4 @@
-*.suo
-*.idc
 *.vs
 bin/*
 obj/*
-*.user
+packages/*
